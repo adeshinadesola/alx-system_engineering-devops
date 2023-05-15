@@ -1,0 +1,8 @@
+#!/bin/bash
+sudo ufw reset   # Reset UFW to default settings (optional, if needed)
+sudo ufw default deny incoming   # Set default incoming policy to deny
+sudo ufw allow 22/tcp   # Allow incoming SSH connections on port 22
+sudo ufw allow 443/tcp   # Allow incoming HTTPS SSL connections on port 443
+sudo ufw allow 80/tcp   # Allow incoming HTTP connections on port 80
+sudo ufw enable   # Enable UFW to start blocking incoming traffic
+
