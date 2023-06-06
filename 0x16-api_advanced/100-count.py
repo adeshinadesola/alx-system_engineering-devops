@@ -2,7 +2,6 @@
  """
     Recursively queries the Reddit API, parses the title of hot articles, and prints the count of given keywords
     """
-
 import re
 import requests
 import sys
