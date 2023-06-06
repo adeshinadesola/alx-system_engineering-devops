@@ -1,24 +1,29 @@
 #!/usr/bin/python3
+ """Recursively queries the Reddit API and returns a list of titles for a subreddit's hot articles"""
 import requests
-
-def recurse(subreddit, hot_list=[], after=None):
-    """Recursively queries the Reddit API and returns a list of titles for a subreddit's hot articles"""
-    url = f"https://www.reddit.com/r/{subreddit}/hot.json?limit=100&after={after}"
-    headers = {"User-Agent": "Mozilla/5.0"}  # Set a custom User-Agent to avoid Too Many Requests error
-
-    response = requests.get(url, headers=headers)
-    if response.status_code == 200:
-        data = response.json()["data"]["children"]
-        if not data:
-            return hot_list
-        else:
-            for post in data:
-                hot_list.append(post["data"]["title"])
-            after = response.json()["data"]["after"]
-            if after is None:
-                return hot_list
-            else:
-                return recurse(subreddit, hot_list, after)
-    else:
+def recurse(subreddit, hot_list=[], after="", count=0):
+    """Returns a list of titles of all hot posts on a given subreddit."""
+    url = "https://www.reddit.com/r/{}/hot/.json".format(subreddit)
+    headers = {
+        "User-Agent": "0x16-api_advanced:project:\
+v1.0.0 (by /u/firdaus_cartoon_jr)"
+    }
+    params = {
+        "after": after,
+        "count": count,
+        "limit": 100
+    }
+    response = requests.get(url, headers=headers, params=params,
+                            allow_redirects=False)
+    if response.status_code == 404:
         return None
 
+    results = response.json().get("data")
+    after = results.get("after")
+    count += results.get("dist")
+    for c in results.get("children"):
+        hot_list.append(c.get("data").get("title"))
+
+    if after is not None:
+        return recurse(subreddit, hot_list, after, count)
+    return hot_list
