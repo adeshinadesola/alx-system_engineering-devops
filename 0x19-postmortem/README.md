@@ -1,5 +1,6 @@
 <h2>Postmortem: Outage Incident at Eventify</h2>
-![debug](https://tinyurl.com/4xe4xjsh) 
+
+![incident](https://tinyurl.com/4xe4xjsh) 
 
 Issue Summary:
     Duration: The outage occurred from June 1, 2023, 10:00 AM (UTC) to June 1, 2023, 2:00 PM (UTC).
