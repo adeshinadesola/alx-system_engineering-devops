@@ -1,13 +1,14 @@
 #!/usr/bin/python3
+"""Contains recurse function"""
 import requests
 
 
-def recurse(subreddit, hot_list=None, after=None, count=0):
+def recurse(subreddit, hot_list=[], after="", count=0):
+    """Returns a list of titles of all hot posts on a given subreddit."""
     url = "https://www.reddit.com/r/{}/hot/.json".format(subreddit)
     headers = {
-        "User-Agent": "0x16-api_advanced:project:"
-                      "v1.0.0 "
-                      "(by /u/folajomi_a)"
+        "User-Agent": "0x16-api_advanced:project:
+v1.0.0 (by /u/folajomi_a)”
     }
     params = {
         "after": after,
@@ -18,13 +19,13 @@ def recurse(subreddit, hot_list=None, after=None, count=0):
                             allow_redirects=False)
     if response.status_code == 404:
         return None
-    if hot_list is None:
-        hot_list = []
-    data = response.json().get("data")
-    after = data.get("after")
-    count += data.get("dist")
-    for post in data.get("children"):
-        hot_list.append(post.get("data").get("title"))
+
+    results = response.json().get("data")
+    after = results.get("after")
+    count += results.get("dist")
+    for c in results.get("children"):
+        hot_list.append(c.get("data").get("title"))
+
     if after is not None:
         return recurse(subreddit, hot_list, after, count)
     return hot_list
